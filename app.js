@@ -6,9 +6,19 @@ var bodyParser = require('body-parser');
 
 
 var users = require('./routes/users');
+var fahrts = require('./routes/fahrts');
 
 var app = express();
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/fahrtenbuch2');
 
+var db = mongoose.connection;
+db.on('error',function(){
+    console.log('error on connecting to fahrtenbuch2');
+})
+db.once('open', function () {
+    console.log('success on connecting to fahrtenbuch2');
+})
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -20,6 +30,7 @@ app.use(cookieParser());
 
 
 app.use('/users', users);
+app.use('/fahrts', fahrts);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -27,6 +38,8 @@ app.use(function(req, res, next) {
     err.status = 404;
     //next(err);
 });
+
+
 /**/
 // error handlers
 
